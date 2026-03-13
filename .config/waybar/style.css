@@ -26,7 +26,7 @@ window#waybar {
 #pulseaudio,
 #custom-launcher,
 #custom-power {
-    background-color: alpha(@background, 0.85);
+    background-color: @background;
     padding: 6px 14px;
     margin-top: 4px;
     margin-bottom: 4px;
@@ -61,7 +61,7 @@ window#waybar {
 
 #workspaces button:hover {
     color: @color6;
-    background: alpha(@color4, 0.2);
+    background: @color4;
 }
 
 #window {
@@ -77,8 +77,8 @@ window#waybar {
 
 #clock {
     color: @color5;
-    background-color: alpha(@background, 0.95);
-    border: 1px solid alpha(@color5, 0.3);
+    background-color: @background;
+    border: 1px solid @color5;
 }
 
 #tray {
