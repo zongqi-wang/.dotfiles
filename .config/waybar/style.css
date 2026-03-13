@@ -69,7 +69,7 @@ window#waybar {
     margin-left: 8px;
 }
 
-#window:empty {
+#window.empty {
     padding: 0;
     margin: 0;
     background-color: transparent;
