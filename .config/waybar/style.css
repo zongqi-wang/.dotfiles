@@ -1,65 +1,131 @@
+@import url("../../.cache/wallust/colors-waybar.css");
+
 * {
-    font-family: "Sans";
-    font-size: 13px;
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", "Sans";
+    font-size: 14px;
+    font-weight: bold;
     min-height: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 window#waybar {
-    background: rgba(26, 26, 26, 0.9);
-    color: #ffffff;
+    background-color: transparent;
+    color: @foreground;
 }
 
-#workspaces button {
-    padding: 0 8px;
-    color: #888888;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-}
-
-#workspaces button.active {
-    color: #ffffff;
-    background: rgba(51, 204, 255, 0.3);
-    border-bottom: 2px solid #33ccff;
-}
-
-#workspaces button:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-#window {
-    padding: 0 10px;
-    color: #888888;
-}
-
-#clock {
-    padding: 0 15px;
-    color: #ffffff;
-}
-
+/* Base style for all modules to create pill shapes */
+#workspaces,
+#window,
+#clock,
+#tray,
 #cpu,
 #memory,
 #network,
 #pulseaudio,
+#custom-launcher,
+#custom-power {
+    background-color: alpha(@background, 0.85);
+    padding: 6px 14px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border-radius: 16px;
+    color: @foreground;
+}
+
+#custom-launcher {
+    color: @color4;
+    font-size: 18px;
+    padding-right: 18px;
+    padding-left: 16px;
+    margin-right: 8px;
+}
+
+#workspaces {
+    padding: 2px 8px;
+    margin-right: 8px;
+}
+
+#workspaces button {
+    padding: 0 4px;
+    color: @color8;
+    background: transparent;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+#workspaces button.active {
+    color: @color4;
+}
+
+#workspaces button:hover {
+    color: @color6;
+    background: alpha(@color4, 0.2);
+}
+
+#window {
+    color: @color7;
+    margin-left: 8px;
+}
+
+#window:empty {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+}
+
+#clock {
+    color: @color5;
+    background-color: alpha(@background, 0.95);
+    border: 1px solid alpha(@color5, 0.3);
+}
+
 #tray {
-    padding: 0 10px;
-    color: #ffffff;
+    margin-right: 8px;
+}
+
+#cpu {
+    color: @color10;
+    margin-right: 8px;
+}
+
+#memory {
+    color: @color11;
+    margin-right: 8px;
+}
+
+#pulseaudio {
+    color: @color12;
+    margin-right: 8px;
 }
 
 #pulseaudio.muted {
-    color: #ff3333;
+    color: @color1;
+}
+
+#network {
+    color: @color14;
+    margin-right: 8px;
 }
 
 #network.disconnected {
-    color: #888888;
+    color: @color1;
+}
+
+#custom-power {
+    color: @color1;
+    margin-left: 4px;
+    padding-right: 16px;
+    padding-left: 16px;
 }
 
 tooltip {
-    background: rgba(26, 26, 26, 0.95);
-    border: 1px solid #33ccff;
-    border-radius: 8px;
+    background: alpha(@background, 0.95);
+    border: 1px solid @color4;
+    border-radius: 12px;
 }
 
 tooltip label {
-    color: #ffffff;
+    color: @foreground;
 }

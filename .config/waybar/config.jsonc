@@ -1,57 +1,94 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 34,
-    "spacing": 4,
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock"],
-    "modules-right": ["tray", "pulseaudio", "network", "cpu", "memory"],
-
-    "hyprland/workspaces": {
-        "format": "{id}",
-        "on-click": "activate",
-        "sort-by-number": true
+    "margin-top": 6,
+    "margin-left": 12,
+    "margin-right": 12,
+    "margin-bottom": 0,
+    "height": 38,
+    "spacing": 8,
+    "modules-left": [
+        "custom/launcher",
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "tray",
+        "cpu",
+        "memory",
+        "pulseaudio",
+        "network",
+        "custom/power"
+    ],
+    "custom/launcher": {
+        "format": " ",
+        "on-click": "anyrun",
+        "tooltip": false
     },
-
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {
+            "active": "",
+            "default": "",
+            "urgent": ""
+        },
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
     "hyprland/window": {
-        "max-length": 50,
+        "format": "{}",
+        "max-length": 40,
         "separate-outputs": true
     },
-
     "clock": {
-        "format": "{:%a %b %d  %H:%M}",
+        "format": "  {:%H:%M    %b %d}",
         "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
+            "mode": "month",
             "format": {
-                "today": "<span color='#33ccff'><b>{}</b></span>"
+                "today": "<span color='#89b4fa'><b>{}</b></span>"
             }
         }
     },
-
     "cpu": {
-        "format": "CPU {usage}%",
+        "format": "  {usage}%",
         "interval": 2
     },
-
     "memory": {
-        "format": "RAM {percentage}%",
+        "format": "  {percentage}%",
         "interval": 2
     },
-
     "network": {
-        "format-wifi": "{essid}",
-        "format-ethernet": "ETH",
-        "format-disconnected": "Offline",
-        "tooltip-format": "{ifname}: {ipaddr}"
+        "format-wifi": "  {essid}",
+        "format-ethernet": "󰈀  Connected",
+        "format-disconnected": "󰖪  Offline",
+        "tooltip-format": "{ifname} via {gwaddr}"
     },
-
     "pulseaudio": {
-        "format": "VOL {volume}%",
-        "format-muted": "MUTE",
+        "format": "{icon} {volume}%",
+        "format-muted": "󰖁  Muted",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "󰋎",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
-
     "tray": {
         "spacing": 10
+    },
+    "custom/power": {
+        "format": " ",
+        "on-click": "hyprctl dispatch exit",
+        "tooltip": false
     }
 }
