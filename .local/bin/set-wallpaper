@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Check if an image was provided
+if [ -z "$1" ]; then
+    echo "Usage: set-wallpaper /path/to/image.jpg"
+    exit 1
+fi
+
+IMAGE=$(realpath "$1")
+
+if [ ! -f "$IMAGE" ]; then
+    echo "Error: File $IMAGE not found."
+    exit 1
+fi
+
+echo "Setting wallpaper to $IMAGE..."
+
+# Preload and set wallpaper in Hyprpaper
+# Note: Ensure hyprpaper is running and configured correctly for this to work
+hyprctl hyprpaper preload "$IMAGE"
+hyprctl hyprpaper wallpaper ",$IMAGE"
+
+echo "Generating color scheme with wallust..."
+wallust run "$IMAGE"
+
+echo "Reloading Waybar..."
+killall -SIGUSR2 waybar || echo "Waybar not running, skipping."
+
+echo "Reloading Hyprland border colors..."
+# Hyprland automatically detects changes to sourced files and reloads them!
+
+echo "Done! Your system theme has been dynamically updated."
