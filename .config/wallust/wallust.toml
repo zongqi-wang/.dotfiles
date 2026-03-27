@@ -27,3 +27,7 @@ target = "~/.cache/wallust/colors-waybar.css"
 [[entry]]
 template = "colors-kitty.conf"
 target = "~/.cache/wallust/colors-kitty.conf"
+
+[[entry]]
+template = "colors-ghostty.conf"
+target = "~/.cache/wallust/colors-ghostty.conf"

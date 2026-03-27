@@ -1,0 +1,39 @@
+# Include wallust dynamic colors (? = silently skip if not yet generated)
+config-file = ?/home/cedwang/.cache/wallust/colors-ghostty.conf
+
+# Font
+font-family = JetBrains Mono
+font-size = 12
+
+# Window
+window-padding-x = 10
+window-padding-y = 10
+background-opacity = 0.85
+confirm-close-surface = false
+window-decoration = false
+
+# ── Keybindings ────────────────────────────────────────────────────────────────
+# On Linux with Logitech K860 in Mac mode, ⌘ sends both Super+Ctrl (firmware),
+# so all ⌘ bindings use super+ctrl. ⌥ sends Alt normally.
+
+# Copy / Paste
+keybind = super+ctrl+c=copy_to_clipboard
+keybind = super+ctrl+v=paste_from_clipboard
+
+# Window / Tab management
+keybind = super+ctrl+n=new_window
+keybind = super+ctrl+t=new_tab
+keybind = super+ctrl+w=close_surface
+
+# ── Natural text editing ───────────────────────────────────────────────────────
+# Word navigation (⌥ = Alt)
+keybind = alt+left=esc:b
+keybind = alt+right=esc:f
+
+# Line navigation (⌘ = super+ctrl)
+keybind = super+ctrl+left=text:\x01
+keybind = super+ctrl+right=text:\x05
+
+# Deletion
+keybind = alt+backspace=esc:\x7f
+keybind = super+ctrl+backspace=text:\x15
