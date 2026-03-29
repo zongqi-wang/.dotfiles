@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode="${1:-popup}"
+pane_path="$(tmux display-message -p "#{pane_current_path}")"
+
+pick_ai_cmd() {
+  if [[ -n "${TMUX_AI_CMD:-}" ]]; then
+    printf '%s\n' "$TMUX_AI_CMD"
+    return 0
+  fi
+
+  for candidate in claude codex chatgpt aichat llm; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+if ! ai_cmd="$(pick_ai_cmd)"; then
+  tmux display-message "Set TMUX_AI_CMD to an installed AI CLI (claude, codex, chatgpt, aichat, llm)"
+  exit 1
+fi
+
+case "$mode" in
+  popup)
+    tmux display-popup -d "$pane_path" -w 80% -h 80% -E "$ai_cmd"
+    ;;
+  split)
+    tmux split-window -hf -l 40% -c "$pane_path" "$ai_cmd"
+    ;;
+  *)
+    tmux display-message "Usage: tmux-ai [popup|split]"
+    exit 1
+    ;;
+esac

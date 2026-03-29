@@ -3,8 +3,8 @@
 # How the image is parsed. Can be 'kmeans', 'fastkmeans', 'quantize' or 'mix'
 backend = "kmeans"
 
-# Color space used. Can be 'srgb', 'hsl', 'lch', 'lab', 'oklab' or 'oklch'
-color_space = "oklab"
+# Color space used. Can be 'lab', 'lab-mixed', 'lch', 'lch-mixed' or 'lch-ansi'
+color_space = "lab"
 
 # Threshold for contrast.
 threshold = 11
@@ -12,22 +12,10 @@ threshold = 11
 # The fallback if wallust fails
 fallback_generator = "interpolate"
 
-[[entry]]
-template = "colors-hyprland.conf"
-target = "~/.cache/wallust/colors-hyprland.conf"
-
-[[entry]]
-template = "colors-anyrun.css"
-target = "~/.cache/wallust/colors-anyrun.css"
-
-[[entry]]
-template = "colors-waybar.css"
-target = "~/.cache/wallust/colors-waybar.css"
-
-[[entry]]
-template = "colors-kitty.conf"
-target = "~/.cache/wallust/colors-kitty.conf"
-
-[[entry]]
-template = "colors-ghostty.conf"
-target = "~/.cache/wallust/colors-ghostty.conf"
+[templates]
+hyprland = { template = "colors-hyprland.conf", target = "~/.cache/wallust/colors-hyprland.conf" }
+walker = { template = "colors-walker.css", target = "~/.config/walker/themes/catppuccin/colors-wallust.css" }
+waybar = { template = "colors-waybar.css", target = "~/.cache/wallust/colors-waybar.css" }
+kitty = { template = "colors-kitty.conf", target = "~/.cache/wallust/colors-kitty.conf" }
+ghostty = { template = "colors-ghostty.conf", target = "~/.cache/wallust/colors-ghostty.conf" }
+tmux = { template = "colors-tmux.conf", target = "~/.cache/wallust/colors-tmux.conf" }

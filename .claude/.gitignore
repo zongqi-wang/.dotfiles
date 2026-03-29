@@ -1,0 +1,5 @@
+*
+!.gitignore
+!README.md
+!settings.json
+!settings.local.example.json

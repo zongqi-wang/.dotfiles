@@ -41,7 +41,7 @@ return {
       require('toggleterm').setup(opts)
 
       -- Terminal keymaps (escape to normal mode)
-      function _G.set_terminal_keymaps()
+      local function set_terminal_keymaps()
         local kopts = { buffer = 0 }
         vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], kopts)
         vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], kopts)
@@ -50,7 +50,11 @@ return {
         vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], kopts)
       end
 
-      vim.cmd 'autocmd! TermOpen term://* lua set_terminal_keymaps()'
+      vim.api.nvim_create_autocmd('TermOpen', {
+        group = vim.api.nvim_create_augroup('toggleterm-keymaps', { clear = true }),
+        pattern = 'term://*',
+        callback = set_terminal_keymaps,
+      })
 
       -- Lazygit terminal
       local Terminal = require('toggleterm.terminal').Terminal
@@ -67,11 +71,11 @@ return {
         end,
       }
 
-      function _G.lazygit_toggle()
+      local function lazygit_toggle()
         lazygit:toggle()
       end
 
-      vim.keymap.set('n', '<leader>tg', '<cmd>lua lazygit_toggle()<CR>', { desc = '[T]oggle Lazy[g]it' })
+      vim.keymap.set('n', '<leader>tg', lazygit_toggle, { desc = '[T]oggle Lazy[g]it' })
     end,
   },
 }

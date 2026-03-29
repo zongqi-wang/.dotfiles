@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//etc/ufw/**)",
+      "Bash(ip addr:*)",
+      "Bash(ip link:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.openclaw.ai)"
+    ]
+  }
+}

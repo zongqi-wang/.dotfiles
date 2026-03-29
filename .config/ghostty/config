@@ -1,5 +1,5 @@
 # Include wallust dynamic colors (? = silently skip if not yet generated)
-config-file = ?/home/cedwang/.cache/wallust/colors-ghostty.conf
+config-file = ?../../.cache/wallust/colors-ghostty.conf
 
 # Font
 font-family = JetBrains Mono

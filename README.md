@@ -1,119 +1,117 @@
 # Dotfiles
 
-Personal configuration files managed with a bare git repository.
+Arch/CachyOS-focused desktop dotfiles for a Wayland setup built around Hyprland, Walker, Waybar, Ghostty, tmux, Fish, Neovim, and Wallust.
 
-## Contents
+The repo is managed as a bare Git repository so the tracked files live directly in `$HOME`.
 
-- **nvim** - Neovim configuration (based on kickstart.nvim)
-- **hypr** - Hyprland window manager, hyprlock, hyprpaper, hypridle
-- **fish** - Fish shell configuration
-- **waybar** - Status bar
-- **dunst** - Notification daemon
+## Highlights
+
+- Hyprland configuration split into focused modules under `.config/hypr/conf.d`
+- Dynamic theming with Wallust for Hyprland, Waybar, Ghostty, Walker, and tmux
+- Ghostty + tmux terminal workflow with popup and split-pane AI launchers
+- Walker launcher with clipboard, calc, file, symbols, and web search providers
+- Neovim setup for Go, Java, and TypeScript development
+
+## Stack
+
+- Window manager: Hyprland
+- Launcher: Walker
+- Bar: Waybar
+- Notifications: SwayNC
+- Terminal: Ghostty
+- Multiplexer: tmux
+- Shell: Fish
+- Editor: Neovim
+- Theming: Wallust
 
 ## Dependencies
 
-### Arch/CachyOS
+### Core packages
 
 ```bash
-# Core Hyprland ecosystem
-sudo pacman -S hyprland hyprlock hyprpaper hypridle hyprpolkitagent
-
-# Status bar and notifications
-sudo pacman -S waybar dunst
-
-# Application launcher
-sudo pacman -S hyprlauncher wofi
-
-# Screenshots and clipboard
-sudo pacman -S grim slurp wl-clipboard cliphist
-
-# Terminal and file manager
-sudo pacman -S kitty dolphin
-
-# Media controls and utilities
-sudo pacman -S playerctl brightnessctl
-
-# Fonts (optional)
-sudo pacman -S ttf-dejavu noto-fonts
-
-# GTK/Qt theming
-sudo pacman -S adw-gtk-theme qt5ct qt6ct
+sudo pacman -S \
+  hyprland hyprlock hyprpaper hypridle hyprpolkitagent \
+  waybar swaync walker wlogout \
+  grim slurp wl-clipboard cliphist playerctl brightnessctl jq hyprpicker \
+  ghostty dolphin firefox tmux fzf fish neovim git wallust \
+  ttf-jetbrains-mono-nerd noto-fonts
 ```
 
-## Setup on a New Machine
-
-### 1. Install dependencies (see above)
-
-### 2. Clone and checkout dotfiles
+### Optional tools
 
 ```bash
-# Clone the bare repo
-git clone --bare git@github.com:zongqi-wang/dotfiles.git $HOME/.dotfiles
+sudo pacman -S lazygit
+```
 
-# Define the alias for this session
+Install one AI CLI if you want the tmux AI bindings to be useful. The helper script auto-detects `claude`, `codex`, `chatgpt`, `aichat`, or `llm`, and you can override that with `TMUX_AI_CMD`.
+
+## Bootstrap
+
+```bash
+git clone --bare https://github.com/zongqi-wang/dotfiles.git "$HOME/.dotfiles"
+
 alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
-# Checkout the files
 dotfiles checkout
-
-# If there are conflicts with existing files, back them up:
-dotfiles checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} {}.backup
-dotfiles checkout
-
-# Hide untracked files
 dotfiles config --local status.showUntrackedFiles no
 ```
 
-### 3. Make the alias permanent
-
-**Fish** (~/.config/fish/config.fish):
-```fish
-alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-```
-
-**Bash/Zsh** (~/.bashrc or ~/.zshrc):
-```bash
-alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-```
-
-### 4. Create screenshot directory
+If checkout reports conflicts, back up the existing files first:
 
 ```bash
-mkdir -p ~/Pictures/Screenshots
+dotfiles checkout 2>&1 | grep -E '\s+\.' | awk '{print $1}' | xargs -I{} mv {} {}.backup
+dotfiles checkout
 ```
 
-### 5. Log out and log back into Hyprland
+Make sure these directories exist on a fresh machine:
 
-## Hyprland Keybindings
+```bash
+mkdir -p ~/.cache/wallust ~/.config/tmux ~/.config/walker/themes/catppuccin ~/Pictures/Screenshots
+```
+
+## Hyprland Keys
 
 | Key | Action |
-|-----|--------|
-| SUPER+Q | Terminal (kitty) |
-| SUPER+R | App launcher |
-| SUPER+E | File manager |
-| SUPER+C | Kill window |
-| SUPER+M | Exit Hyprland |
-| SUPER+L | Lock screen |
-| SUPER+V | Toggle floating |
-| SUPER+SHIFT+V | Clipboard history |
-| SUPER+F | Fullscreen |
-| SUPER+SHIFT+F | Maximize |
-| SUPER+S | Scratchpad |
-| SUPER+1-0 | Switch workspace |
-| SUPER+SHIFT+1-0 | Move window to workspace |
-| SUPER+Arrow | Move focus |
-| SUPER+SHIFT+Arrow | Move window |
-| SUPER+CTRL+Arrow | Resize window |
-| Print | Screenshot (full) |
-| SUPER+Print | Screenshot (region) |
-| SUPER+SHIFT+Print | Screenshot (window) |
+| --- | --- |
+| `SUPER+Return` | Open Ghostty |
+| `SUPER+Space` / `SUPER+R` | Open Walker |
+| `SUPER+SHIFT+V` | Open Walker clipboard mode |
+| `SUPER+E` | Open Dolphin |
+| `SUPER+B` | Open Firefox |
+| `SUPER+N` | Toggle SwayNC |
+| `SUPER+M` | Open Wlogout |
+| `SUPER+CTRL+L` | Lock screen |
+| `SUPER+S` | Toggle special workspace |
+| `Print` | Screenshot to file |
+| `CTRL+Print` | Screenshot to clipboard |
 
-## Usage
+## tmux Keys
+
+Prefix is `Ctrl-a`.
+
+| Key | Action |
+| --- | --- |
+| `prefix + f` | Fuzzy project/session switcher |
+| `prefix + a` | Split pane and launch AI CLI |
+| `prefix + A` | Open AI CLI in a popup |
+| `prefix + |` | Vertical split in current path |
+| `prefix + -` | Horizontal split in current path |
+| `prefix + r` | Reload tmux config |
+
+Set an explicit AI command if auto-detection is not enough:
 
 ```bash
-dotfiles status              # Check status
-dotfiles add <file>          # Track a new file
-dotfiles commit -m "msg"     # Commit changes
-dotfiles push                # Push to remote
-dotfiles diff                # View changes
+export TMUX_AI_CMD=claude
 ```
+
+In Fish:
+
+```fish
+set -Ux TMUX_AI_CMD claude
+```
+
+## Repo Notes
+
+- The repo targets my personal Arch/CachyOS workstation first, so monitor and hardware-specific settings may still need adjustment on another machine.
+- tmux plugins are managed through TPM. Install it at `~/.tmux/plugins/tpm` if you want automatic plugin loading.
+- Wallust templates are tracked here, but the generated files live under `~/.cache/wallust`.

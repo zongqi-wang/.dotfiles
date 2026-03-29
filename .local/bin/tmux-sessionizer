@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+project_roots=(
+  "$HOME/Projects"
+)
+
+config_roots=(
+  "$HOME/.config/hypr"
+  "$HOME/.config/nvim"
+  "$HOME/.config/tmux"
+  "$HOME/.config/walker"
+  "$HOME/.local/bin"
+)
+
+collect_project_paths() {
+  local root
+  for root in "${project_roots[@]}"; do
+    [[ -d "$root" ]] || continue
+
+    if command -v fd >/dev/null 2>&1; then
+      fd --base-directory "$root" --hidden --max-depth 2 --type d . | sed "s|^|$root/|"
+    else
+      find "$root" -mindepth 1 -maxdepth 2 -type d
+    fi
+  done
+}
+
+selected="$(
+  {
+    printf '%s\n' "${config_roots[@]}"
+    collect_project_paths
+  } | awk '!seen[$0]++' | sort | fzf \
+    --prompt='Session > ' \
+    --height=40% \
+    --layout=reverse \
+    --border
+)"
+
+[[ -n "$selected" ]] || exit 0
+
+session_name="$(
+  basename "$selected" | tr '.:' '_' | tr -cs '[:alnum:]_-' '_'
+)"
+
+if ! tmux has-session -t "$session_name" 2>/dev/null; then
+  tmux new-session -d -s "$session_name" -c "$selected"
+fi
+
+if [[ -n "${TMUX:-}" ]]; then
+  tmux switch-client -t "$session_name"
+else
+  tmux attach-session -t "$session_name"
+fi
